@@ -3,7 +3,7 @@ import re
 
 app = Flask(__name__)
 
-# Password strength checking function
+# Password strength check function
 def password_strength(password):
     length_criteria = len(password) >= 8
     lowercase_criteria = re.search(r"[a-z]", password)
@@ -35,7 +35,6 @@ def password_strength(password):
 def index():
     return render_template('index.html')
 
-# Route to handle AJAX request for checking password strength
 @app.route('/check_password', methods=['POST'])
 def check_password():
     data = request.get_json()

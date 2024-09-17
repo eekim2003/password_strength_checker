@@ -10,20 +10,14 @@
     <div class="container">
         <div class="container-inner">
             <h1>Password Strength Checker</h1>
-            
-            <!-- Input field for password -->
             <input type="text" id="password" placeholder="Enter your password" oninput="checkPasswordStrength()">
-            
-            <!-- Password strength feedback message -->
             <p id="result"></p>
-            
-            <!-- Section for password tips -->
             <div id="tips">
-                <p id="length-tip">• Add at least 8 characters.</p>
-                <p id="lowercase-tip">• Include at least one lowercase letter.</p>
-                <p id="uppercase-tip">• Include at least one uppercase letter.</p>
-                <p id="digit-tip">• Add at least one digit.</p>
-                <p id="special-char-tip">• Include at least one special character ($!?#-).</p>
+                <p id="length-tip">• Add at least 8 characters</p>
+                <p id="lowercase-tip">• Include at least one lowercase letter</p>
+                <p id="uppercase-tip">• Include at least one uppercase letter</p>
+                <p id="digit-tip">• Add at least one digit</p>
+                <p id="special-char-tip">• Include at least one special character ($!?#-)</p>
             </div>
         </div>
     </div>
@@ -32,7 +26,7 @@
         function checkPasswordStrength() {
             const password = document.getElementById('password').value;
 
-            // Clear the result and tips if the password is empty
+            // Clear the result and tips if the password box is empty
             if (password === '') {
                 document.getElementById('result').textContent = '';
                 updateTips('');
@@ -83,8 +77,8 @@
             // Check digit
             digitTip.style.color = /\d/.test(password) ? 'green' : 'red';
 
-            // Check specific special characters
-            specialCharTip.style.color = /[$!?#\-]/.test(password) ? 'green' : 'red';
+            // Check special character
+            specialCharTip.style.color = /[@$!%*?&#]/.test(password) ? 'green' : 'red';
         }
     </script>
 </body>
