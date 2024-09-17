@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="container-inner">
+            <h1>Password Strength Checker</h1>
+            
+            <!-- Input field for password -->
+            <input type="text" id="password" placeholder="Enter your password" oninput="checkPasswordStrength()">
+            
+            <!-- Password strength feedback message -->
+            <p id="result"></p>
+            
+            <!-- Section for password tips -->
+            <div id="tips">
+                <p id="length-tip">• Add at least 8 characters.</p>
+                <p id="lowercase-tip">• Include at least one lowercase letter.</p>
+                <p id="uppercase-tip">• Include at least one uppercase letter.</p>
+                <p id="digit-tip">• Add at least one digit.</p>
+                <p id="special-char-tip">• Include at least one special character ($!?#-).</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+
+            // Clear the result and tips if the password is empty
+            if (password === '') {
+                document.getElementById('result').textContent = '';
+                updateTips('');
+                return;
+            }
+
+            fetch('/check_password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password: password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = data.result;
+                updateTips(password);
+            });
+        }
+
+        function updateTips(password) {
+            // Initialize tips
+            const lengthTip = document.getElementById('length-tip');
+            const lowercaseTip = document.getElementById('lowercase-tip');
+            const uppercaseTip = document.getElementById('uppercase-tip');
+            const digitTip = document.getElementById('digit-tip');
+            const specialCharTip = document.getElementById('special-char-tip');
+
+            if (password === '') {
+                // Hide tips when password is empty
+                lengthTip.style.color = 'red';
+                lowercaseTip.style.color = 'red';
+                uppercaseTip.style.color = 'red';
+                digitTip.style.color = 'red';
+                specialCharTip.style.color = 'red';
+                return;
+            }
+
+            // Check length
+            lengthTip.style.color = password.length >= 8 ? 'green' : 'red';
+
+            // Check lowercase
+            lowercaseTip.style.color = /[a-z]/.test(password) ? 'green' : 'red';
+
+            // Check uppercase
+            uppercaseTip.style.color = /[A-Z]/.test(password) ? 'green' : 'red';
+
+            // Check digit
+            digitTip.style.color = /\d/.test(password) ? 'green' : 'red';
+
+            // Check specific special characters
+            specialCharTip.style.color = /[$!?#\-]/.test(password) ? 'green' : 'red';
+        }
+    </script>
+</body>
+</html>
